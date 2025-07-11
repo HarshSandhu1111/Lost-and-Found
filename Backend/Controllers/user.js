@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
+const generatetoken = require('../config/generatetoken');
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const signup = async(req,res)=>{
@@ -22,7 +23,14 @@ try {
         password,
         phone
     });
-   return res.json(user);
+   return res.json(
+   { _id:user._id,
+            name:user.name,
+            email:user.email,
+            password:user.password,
+            phone:user.phone,
+            token:generatetoken(user._id)
+});
 
 } catch (error) {
 res.json(error);    
